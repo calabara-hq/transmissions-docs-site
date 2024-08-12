@@ -1,0 +1,50 @@
+---
+title: Channels
+description: 'Use the SDK to interact with channels'
+---
+
+import UplinkConfig from '/snippets/uplink-js-config.mdx'
+
+## Create Infinite Channel
+
+### Usage
+<CodeGroup>
+    ```javascript app.js
+    import { uplinkClient } from './config
+
+    const channelAddress = await uplinkClient.createInfiniteChannel(args)
+    ```
+    <UplinkConfig/>
+</CodeGroup>
+
+### Inputs
+```typescript
+CreateInfiniteChannelConfig = {
+  uri: string
+  name: string
+  defaultAdmin: string
+  managers: string[]
+  setupActions: SetupAction[]
+  transportLayer: InfiniteTransportLayer
+} & TransactionOverridesDict
+```
+### Returns
+```typescript
+{
+    contractAddress: Address
+    event: Log
+}
+```
+
+### Example
+
+## Create Finite Channel
+
+## Set Logic
+
+## Set Fees
+
+## Set Transport Layer
+
+## Update Channel Metadata
+

@@ -7,12 +7,12 @@
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#5856D6",
+    "light": "#5856D6",
+    "dark": "#5856D6",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#5856D6",
+      "to": "#5856D6"
     }
   },
   "topbarLinks": [
@@ -50,36 +50,43 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Overview",
       "pages": [
-        "introduction",
-        "quickstart",
-        "development"
+        "introduction"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Contracts",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "contracts/architecture",
+        "contracts/deployments"
       ]
     },
     {
-      "group": "API Documentation",
+      "group": "Dev Tools",
       "pages": [
-        "api-reference/introduction"
+        {
+          "group": "SDK",
+          "pages": [
+            "sdk/quickstart",
+            {
+              "group": "Uplink",
+              "pages": [
+                "sdk/uplink/channels",
+                "sdk/uplink/tokens",
+                "sdk/uplink/upgrades"
+              ]
+            }
+          ]
+        },
+        "React Hooks",
+        "subgraph"
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Subgraph",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "quickstart"
       ]
     }
   ],

@@ -1,0 +1,23 @@
+```javascript config.js
+import { TransmissionsClient } from '@tx-kit/sdk'
+    import { CreatePublicClient, CreateWalletClient } from 'viem'
+    import { base } from 'viem/chains'
+
+
+    const publicClient = createPublicClient({
+        chain: base,
+        transport: http()
+    })
+
+    const walletClient = createWalletClient({
+        account, // from local private key or browser wallet
+        chain: base,
+        transport: http()
+    })
+
+    export const { uplinkClient } = new TransmissionsClient({
+        publicClient,
+        walletClient,
+        chain: base
+    })
+```

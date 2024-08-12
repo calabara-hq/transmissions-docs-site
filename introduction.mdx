@@ -1,71 +1,70 @@
 ---
 title: Introduction
-description: 'Welcome to the home of your new documentation'
+description: 'Transmissions is a suite of composable, audited, NounsDAO funded contracts and developer tools that enable cooperative applications, allowing cohorts to permissionlessly build grant programs, bounties, decentralized galleries, onchain apps, and more. '
 ---
 
 <img
-  className="block dark:hidden"
-  src="/images/hero-light.svg"
+  className="block"
+  src="/images/hero.svg"
   alt="Hero Light"
 />
+
+
+## Features
+
+The core entities of the protocol are channels. Channels extend the ERC-1155 standard with the following features: 
+
+- **Custom interaction logic**. Read from any onchain data source to govern who is allowed to create and mint tokens in the channel.
+- **Custom fees**. Build your own mint pricing and protocol reward splits for the channel.
+- **Push-style protocol rewards**. Protocol rewards flow directly to recipients without claiming.
+- **Token intents**. Create tokens in the collection gaslessly
+- **Onchain sponsorships**. Receive rewards for sponsoring intents onchain
+- **ERC-20 Minting**
+- **Open Source**
+- **Composable**. BYO interaction logic, fee, and transport layer contracts
+
+
+## Transport Layers
+
+Operators may want to run channels in different "modes" depending on the desired use case. This can be done by specifying a transport layer for the channel. The transport layer receives messages from the channel, and runs the application logic for the intended use case.
+There are currently 2 transport layers that users can choose from when creating a channel: **Infinite** and **Finite**.
+
+**Infinite Channels** are a never ending collection of posts. They can be used to create galleries, zines, application feeds, and more. E.g. mintboards on uplink.wtf are infinite channels.
+
+**Finite Channels** are timed collections that accept reward conditions and escrow ETH or ERC-20 rewards. They can be used to create bounties, grant rounds, voting systems and more. E.g. contests on uplink.wtf are finite channels, where new tokens are entries and mints are votes.
+
+## Use Cases
+- **Grant Programs**: Decentralized funding mechanisms with collaborative decision-making.
+- **Bounties**: Tools for creating and managing incentives within communities.
+- **Decentralized Galleries**: Platforms for curating and displaying digital assets onchain.
+- **Other Cooperative Apps**: Infrastructure for building decentralized applications.
+
 <img
-  className="hidden dark:block"
-  src="/images/hero-dark.svg"
-  alt="Hero Dark"
+  className="block dark:hidden"
+  src="/images/layers.png"
+  alt="Layers"
 />
 
-## Setting up
-
-The first step to world-class documentation is setting up your editing environments.
-
 <CardGroup cols={2}>
   <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
-  >
-    Get your docs set up locally for easy development
-  </Card>
-  <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
-  >
-    Preview your changes before you push to make sure they're perfect
-  </Card>
-</CardGroup>
-
-## Make it yours
-
-Update your docs to your brand and add valuable content for the best user conversion.
-
-<CardGroup cols={2}>
-  <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
-  </Card>
-  <Card
-    title="Reference APIs"
-    icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
-  >
-    Automatically generate endpoints from an OpenAPI spec
-  </Card>
-  <Card
-    title="Add Components"
+    title="Contracts"
     icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/components/accordion"
+    href="/contracts/architecture"
   >
-    Build interactive features and designs to guide your users
+    Explore the protocol architecture
   </Card>
   <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
+    title="SDK"
+    icon="code"
+    href="sdk/quickstart"
   >
-    Check out our showcase of our favorite documentation
+    Get started with the tx-kit SDK
+  </Card>
+  <Card
+    title="Subgraph"
+    icon="diagram-project"
+    href="subgraph"
+  >
+    Explore the protocol subgraph
   </Card>
 </CardGroup>
