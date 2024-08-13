@@ -1,6 +1,6 @@
 ---
-title: useUpdateMetadata
-description: Update the metadata for a channel
+title: useSponsorTokenWithETH
+description: Sponsor a token with ETH
 ---
 
 import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
@@ -9,23 +9,22 @@ import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
 <CodeGroup>
 ```typescript Component.tsx
 "use client";
-import { useUpdateMetadata } from "@tx-kit/hooks";
+import { useSponsorTokenWithETH } from "@tx-kit/hooks";
 
 const MyComponent = () => {
     const { 
-        updateMetadata,
-        uri,
-        name,
+        sponsorTokenWithETH,
+        tokenId,
         status, 
         txHash,
         error 
-    } = useUpdateMetadata()
+    } = useSponsorTokenWithETH()
 
     const onClick = () => {
-        updateMetadata({ ... })
+        sponsorTokenWithETH({ ... })
     }
 
-    return <button onClick={onClick}>Update Metadata</button>
+    return <button onClick={onClick}>Sponsor Token</button>
 }
 ```
 <ContextConfigSnippet/>
@@ -33,15 +32,24 @@ const MyComponent = () => {
 
 
 ## Returns
-### updateChannelMetadata
-Function to update channel metadata. See [updateChannelMetadata](/sdk/uplink/channels/updateChannelMetadata) args.
+### sponsorTokenWithETH
+Function to sponsor a token with ETH. See [sponsorTokenWithETH](/sdk/uplink/tokens/sponsorTokenWithETH) args.
 
-- **type**: `({ 
+- **type**: 
+`({ 
     channelAddress: string;
-    uri: string;
-    name: string;
+    sponsoredToken: DeferredTokenIntentWithSignature;
+    to: string;
+    amount: number;
+    mintReferral: string;
+    data: string;
     transactionOverrides?: TransactionOverrides;
-}) => Promise<Log[] | undefined>`
+    })
+=> Promise<{
+    tokenId: bigint | undefined;
+    events: Log[];
+} | undefined>
+`
 
 ### status
 - **type**: `ContractExecutionStatus`
@@ -54,15 +62,10 @@ type ContractExecutionStatus =
 ```
 the status of the transaction
 
-### uri
-- **type**: `string`
+### tokenId
+- **type**: `bigint`
 
-the new uri for the channel
-
-### name
-- **type**: `string`
-
-the new name for the channel
+the token id of the sponsored token
 
 ### txHash
 - **type**: `string`
@@ -73,4 +76,3 @@ the transaction hash of the transaction
 - **type**: `any`
 
 the revert message if the transaction fails
-

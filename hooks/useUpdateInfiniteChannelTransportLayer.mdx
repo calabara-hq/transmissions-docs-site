@@ -1,4 +1,59 @@
 ---
 title: useUpdateTransportLayer
-description: TODO
+description: Update the transport layer for an infinite channel
 ---
+
+import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript Component.tsx
+"use client";
+import { useUpdateInfiniteChannelTransportLayer } from "@tx-kit/hooks";
+
+const MyComponent = () => {
+    const { 
+        updateInfiniteChannelTransportLayer, 
+        status, 
+        txHash,
+        error 
+    } = useUpdateInfiniteChannelTransportLayer()
+
+    const onClick = () => {
+        updateInfiniteChannelTransportLayer({ ... })
+    }
+
+    return <button onClick={onClick}>Update Transport Layer</button>
+}
+```
+<ContextConfigSnippet/>
+</CodeGroup>
+
+
+## Returns
+### updateInfiniteChannelTransportLayer
+Function to update the infinite channel transport layer. See [updateTransportLayer](/sdk/uplink/channels/updateInfiniteChannelTransportLayer) parameters.
+
+- **type**: `({ channelAddress: string; saleDurationInSeconds: number; transactionOverrides?: TransactionOverrides; }) => Promise<Log[] | undefined>`
+
+### status
+- **type**: `ContractExecutionStatus`
+```typescript
+type ContractExecutionStatus =
+  | 'pendingApproval'
+  | 'txInProgress'
+  | 'complete'
+  | 'error'
+```
+the status of the transaction
+
+### txHash
+- **type**: `string`
+
+the transaction hash of the transaction
+
+### error
+- **type**: `any`
+
+the revert message if the transaction fails
+

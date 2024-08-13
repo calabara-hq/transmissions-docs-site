@@ -1,6 +1,6 @@
 ---
-title: useUpdateMetadata
-description: Update the metadata for a channel
+title: useMintTokenBatchWithETH
+description: Mint a batch of tokens with ETH
 ---
 
 import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
@@ -9,23 +9,21 @@ import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
 <CodeGroup>
 ```typescript Component.tsx
 "use client";
-import { useUpdateMetadata } from "@tx-kit/hooks";
+import { useMintTokenBatchWithETH } from "@tx-kit/hooks";
 
 const MyComponent = () => {
     const { 
-        updateMetadata,
-        uri,
-        name,
+        mintTokenBatchWithETH,
         status, 
         txHash,
         error 
-    } = useUpdateMetadata()
+    } = useMintTokenBatchWithETH()
 
     const onClick = () => {
-        updateMetadata({ ... })
+        mintTokenBatchWithETH({ ... })
     }
 
-    return <button onClick={onClick}>Update Metadata</button>
+    return <button onClick={onClick}>Mint Token</button>
 }
 ```
 <ContextConfigSnippet/>
@@ -33,13 +31,16 @@ const MyComponent = () => {
 
 
 ## Returns
-### updateChannelMetadata
-Function to update channel metadata. See [updateChannelMetadata](/sdk/uplink/channels/updateChannelMetadata) args.
+### mintTokenBatchWithETH
+Function to mint a batch of tokens with ETH. See [mintTokenBatchWithETH](/sdk/uplink/tokens/mintTokenBatchWithETH) args.
 
-- **type**: `({ 
+- **type**: `({
     channelAddress: string;
-    uri: string;
-    name: string;
+    to: string;
+    tokenIds: bigint[];
+    amounts: number[];
+    mintReferral: string;
+    data: string;
     transactionOverrides?: TransactionOverrides;
 }) => Promise<Log[] | undefined>`
 
@@ -54,16 +55,6 @@ type ContractExecutionStatus =
 ```
 the status of the transaction
 
-### uri
-- **type**: `string`
-
-the new uri for the channel
-
-### name
-- **type**: `string`
-
-the new name for the channel
-
 ### txHash
 - **type**: `string`
 
@@ -73,4 +64,3 @@ the transaction hash of the transaction
 - **type**: `any`
 
 the revert message if the transaction fails
-

@@ -1,4 +1,72 @@
 ---
 title: useCreateFiniteChannel
-description: TODO
+description: Create a new finite channel
 ---
+
+import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript Component.tsx
+"use client";
+import { useCreateFiniteChannel } from "@tx-kit/hooks";
+
+const MyComponent = () => {
+    const { 
+        createFiniteChannel,
+        channelAddress,
+        status, 
+        txHash,
+        error 
+    } = useCreateFiniteChannel()
+
+    const onClick = () => {
+        createFiniteChannel({ ... })
+    }
+
+    return <button onClick={onClick}>Create Channel</button>
+}
+```
+<ContextConfigSnippet/>
+</CodeGroup>
+
+
+## Returns
+### createFiniteChannel
+Function to create a new finite channel. See [createFiniteChannel](/sdk/uplink/channels/createFiniteChannel) args.
+
+- **type**: `({
+    uri: string;
+    name: string;
+    defaultAdmin: string;
+    managers: string[];
+    setupActions: SetupAction[];
+    transportLayer: InfiniteTransportLayer;
+    transactionOverrides?: TransactionOverrides;
+    }) => Promise<Log[] | undefined>`
+
+### status
+- **type**: `ContractExecutionStatus`
+```typescript
+type ContractExecutionStatus =
+  | 'pendingApproval'
+  | 'txInProgress'
+  | 'complete'
+  | 'error'
+```
+the status of the transaction
+
+### channelAddress
+- **type**: `Address`
+
+the address of the new channel
+
+### txHash
+- **type**: `string`
+
+the transaction hash of the transaction
+
+### error
+- **type**: `any`
+
+the revert message if the transaction fails

@@ -1,6 +1,6 @@
 ---
-title: useCreateInfiniteChannel
-description: Create a new infinite channel
+title: useCreateToken
+description: Create a new token in a channel
 ---
 
 import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
@@ -9,22 +9,22 @@ import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
 <CodeGroup>
 ```typescript Component.tsx
 "use client";
-import { useCreateInfiniteChannel } from "@tx-kit/hooks";
+import { useCreateToken } from "@tx-kit/hooks";
 
 const MyComponent = () => {
     const { 
-        createInfiniteChannel,
-        channelAddress,
+        createToken,
+        tokenId,
         status, 
         txHash,
         error 
-    } = useCreateInfiniteChannel()
+    } = useCreateToken()
 
     const onClick = () => {
-        createInfiniteChannel({ ... })
+        createToken({ ... })
     }
 
-    return <button onClick={onClick}>Create Channel</button>
+    return <button onClick={onClick}>Create Token</button>
 }
 ```
 <ContextConfigSnippet/>
@@ -32,16 +32,13 @@ const MyComponent = () => {
 
 
 ## Returns
-### createInfiniteChannel
-Function to create a new infinite channel. See [createInfiniteChannel](/sdk/uplink/channels/createInfiniteChannel) args.
+### createToken
+Function to create a new token. See [createToken](/sdk/uplink/tokens/createToken) args.
 
-- **type**: `({
+- **type**: `({  
+    channelAddress: string;
     uri: string;
-    name: string;
-    defaultAdmin: string;
-    managers: string[];
-    setupActions: SetupAction[];
-    transportLayer: InfiniteTransportLayer;
+    maxSupply: bigint;
     transactionOverrides?: TransactionOverrides;
     }) => Promise<Log[] | undefined>`
 
@@ -56,10 +53,10 @@ type ContractExecutionStatus =
 ```
 the status of the transaction
 
-### channelAddress
-- **type**: `Address`
+### tokenId
+- **type**: `bigint`
 
-the address of the new channel
+the token id of the new token
 
 ### txHash
 - **type**: `string`

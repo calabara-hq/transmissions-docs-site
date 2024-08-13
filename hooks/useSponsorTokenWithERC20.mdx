@@ -1,0 +1,103 @@
+---
+title: useSponsorTokenWithERC20
+description: Sponsor a token with ERC-20
+---
+
+import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript Component.tsx
+"use client";
+import { useSponsorTokenWithERC20 } from "@tx-kit/hooks";
+
+const MyComponent = () => {
+    const { 
+        sponsorTokenWithERC20,
+        sponsorTokenWithERC20_smartWallet,
+        tokenId,
+        status, 
+        txHash,
+        error 
+    } = useSponsorTokenWithERC20()
+
+    const onClick = () => {
+        if(smartWallet) sponsorTokenWithERC20_smartWallet({ ... })
+        else sponsorTokenWithERC20({ ... })
+    }
+
+    return <button onClick={onClick}>Sponsor Token</button>
+}
+```
+<ContextConfigSnippet/>
+</CodeGroup>
+
+
+## Returns
+### sponsorTokenWithERC20
+Function to sponsor a token with an EOA wallet. See [sponsorTokenWithERC20](/sdk/uplink/tokens/sponsorTokenWithERC20) args.
+
+- **type**: 
+`({  
+    channelAddress: string;
+    sponsoredToken: DeferredTokenIntentWithSignature;
+    to: string;
+    amount: number;
+    mintReferral: string;
+    data: string;
+    transactionOverrides?: TransactionOverrides;
+    },
+    erc20Contract: Address,
+    erc20AmountRequired: bigint
+    ) => Promise<{
+    tokenId: bigint | undefined;
+    events: Log[];
+} | undefined>
+`
+
+### sponsorTokenWithERC20_smartWallet
+Function to sponsor a token with a smart wallet. See [sponsorTokenWithERC20](/sdk/uplink/tokens/sponsorTokenWithERC20) args.
+
+- **type**: 
+`({  
+    channelAddress: string;
+    sponsoredToken: DeferredTokenIntentWithSignature;
+    to: string;
+    amount: number;
+    mintReferral: string;
+    data: string;
+    transactionOverrides?: TransactionOverrides;
+    },
+    erc20Contract: Address,
+    erc20AmountRequired: bigint
+    ) => Promise<{
+    tokenId: bigint | undefined;
+    events: Log[];
+} | undefined>
+`
+
+### status
+- **type**: `ContractExecutionStatus | erc20ApprovalInProgress`
+```typescript
+type ContractExecutionStatus =
+  | 'pendingApproval'
+  | 'txInProgress'
+  | 'complete'
+  | 'error'
+```
+the status of the transaction
+
+### tokenId
+- **type**: `bigint`
+
+the token id of the sponsored token
+
+### txHash
+- **type**: `string`
+
+the transaction hash of the transaction
+
+### error
+- **type**: `any`
+
+the revert message if the transaction fails

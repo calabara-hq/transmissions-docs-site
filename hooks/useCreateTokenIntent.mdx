@@ -1,0 +1,64 @@
+---
+title: useCreateTokenIntent
+description: Create a new token intent in a channel
+---
+
+import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript Component.tsx
+"use client";
+import { useCreateTokenIntent } from "@tx-kit/hooks";
+
+const MyComponent = () => {
+    const { 
+        createTokenIntent,
+        signedIntent,
+        status, 
+        txHash,
+        error 
+    } = useCreateTokenIntent()
+
+    const onClick = () => {
+        createTokenIntent({ ... })
+    }
+
+    return <button onClick={onClick}>Create Token Intent</button>
+}
+```
+<ContextConfigSnippet/>
+</CodeGroup>
+
+
+## Returns
+### createTokenIntent
+Function to create a new token intent. See [createToken](/sdk/uplink/tokens/createToken) args.
+
+- **type**: `({  
+    channelAddress: string;
+    uri: string;
+    maxSupply: bigint;
+    )} => Promise<DeferredTokenIntentWithSignature | undefined>`
+
+### status
+- **type**: `ContractExecutionStatus`
+```typescript
+type ContractExecutionStatus =
+  | 'pendingApproval'
+  | 'txInProgress'
+  | 'complete'
+  | 'error'
+```
+the status of the signature request
+
+### signedIntent
+- **type**: `DeferredTokenIntentWithSignature`
+
+the signed token intent. this is passed in the `sponsoredToken` parameter during sponsorship.
+
+
+### error
+- **type**: `any`
+
+the revert message if the transaction fails

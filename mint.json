@@ -18,36 +18,17 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "https://discord.gg/uGZrNrRgsu"
+    },
+    {
+      "name": "Warpcast",
+      "url": "https://warpcast.com/~/channel/uplink"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Github",
+    "url": "https://github.com/calabara-hq"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
-  ],
   "navigation": [
     {
       "group": "Overview",
@@ -67,6 +48,7 @@
       "pages": [
         {
           "group": "SDK",
+          "icon": "code",
           "pages": [
             "sdk/quickstart",
             {
@@ -84,8 +66,7 @@
                 "sdk/uplink/tokens/mintTokenBatchWithETH",
                 "sdk/uplink/tokens/mintTokenBatchWithERC20",
                 "sdk/uplink/tokens/sponsorTokenWithETH",
-                "sdk/uplink/tokens/sponsorTokenWithERC20",
-                "sdk/uplink/upgrades"
+                "sdk/uplink/tokens/sponsorTokenWithERC20"
               ]
             },
             {
@@ -102,28 +83,28 @@
         },
         {
           "group": "React Hooks",
+          "icon": "react",
           "pages": [
             "hooks/quickstart",
             "hooks/useCreateInfiniteChannel",
             "hooks/useCreateFiniteChannel",
             "hooks/useUpdateChannelFees",
-            "hooks/useUpdateChannelMetadata",
-            "hooks/useUpdateInfiniteChannelTransportLayer"
+            "hooks/useUpdateMetadata",
+            "hooks/useUpdateInfiniteChannelTransportLayer",
+            "hooks/useCreateToken",
+            "hooks/useCreateTokenIntent",
+            "hooks/useMintTokenBatchWithETH",
+            "hooks/useMintTokenBatchWithERC20",
+            "hooks/useSponsorTokenWithETH",
+            "hooks/useSponsorTokenWithERC20"
           ]
         },
         "subgraph"
       ]
-    },
-    {
-      "group": "Subgraph",
-      "pages": [
-        "quickstart"
-      ]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "x": "https://x.com/uplinkwtf",
+    "github": "https://github.com/calabara-hq"
   }
 }

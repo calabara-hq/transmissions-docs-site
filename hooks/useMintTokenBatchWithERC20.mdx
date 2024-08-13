@@ -1,6 +1,6 @@
 ---
-title: useUpdateMetadata
-description: Update the metadata for a channel
+title: useMintTokenBatchWithERC20
+description: Mint a batch of tokens with ERC-20
 ---
 
 import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
@@ -9,23 +9,21 @@ import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
 <CodeGroup>
 ```typescript Component.tsx
 "use client";
-import { useUpdateMetadata } from "@tx-kit/hooks";
+import { useMintTokenBatchWithERC20 } from "@tx-kit/hooks";
 
 const MyComponent = () => {
     const { 
-        updateMetadata,
-        uri,
-        name,
+        mintTokenBatchWithERC20,
         status, 
         txHash,
         error 
-    } = useUpdateMetadata()
+    } = useMintTokenBatchWithERC20()
 
     const onClick = () => {
-        updateMetadata({ ... })
+        mintTokenBatchWithERC20({ ... })
     }
 
-    return <button onClick={onClick}>Update Metadata</button>
+    return <button onClick={onClick}>Mint Token</button>
 }
 ```
 <ContextConfigSnippet/>
@@ -33,13 +31,16 @@ const MyComponent = () => {
 
 
 ## Returns
-### updateChannelMetadata
-Function to update channel metadata. See [updateChannelMetadata](/sdk/uplink/channels/updateChannelMetadata) args.
+### mintTokenBatchWithERC20
+Function to create a new token. See [mintTokenBatchWithERC20](/sdk/uplink/tokens/mintTokenBatchWithERC20) args.
 
-- **type**: `({ 
+- **type**: `({
     channelAddress: string;
-    uri: string;
-    name: string;
+    to: string;
+    tokenIds: bigint[];
+    amounts: number[];
+    mintReferral: string;
+    data: string;
     transactionOverrides?: TransactionOverrides;
 }) => Promise<Log[] | undefined>`
 
@@ -54,16 +55,6 @@ type ContractExecutionStatus =
 ```
 the status of the transaction
 
-### uri
-- **type**: `string`
-
-the new uri for the channel
-
-### name
-- **type**: `string`
-
-the new name for the channel
-
 ### txHash
 - **type**: `string`
 
@@ -73,4 +64,3 @@ the transaction hash of the transaction
 - **type**: `any`
 
 the revert message if the transaction fails
-
