@@ -1,7 +1,9 @@
 ```typescript config.ts
 import { TransmissionsClient } from '@tx-kit/sdk'
+import { BASE_MAINNET_SUBGRAPH_URL } from '@tx-kit/sdk/constants'
 import { CreatePublicClient, CreateWalletClient } from 'viem'
 import { base } from 'viem/chains'
+
 
 const publicClient = createPublicClient({
     chain: base,
@@ -14,9 +16,12 @@ const walletClient = createWalletClient({
     transport: http()
 })
 
-export const { uplinkClient } = new TransmissionsClient({
+export const { downlinkClient } = new TransmissionsClient({
     publicClient,
     walletClient,
-    chain: base
+    chain: base,
+    apiConfig: {
+        serverUrl: BASE_MAINNET_SUBGRAPH_URL
+    }
 })
 ```

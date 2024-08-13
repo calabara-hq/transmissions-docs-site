@@ -1,0 +1,73 @@
+---
+title: customQuery
+description: Execute a custom query on the subgraph
+---
+
+import DownlinkConfig from '/snippets/downlink-js-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript app.ts
+import { downlinkClient } from './config'
+
+const data = await downlinkClient.customQuery({ ... })
+```
+<DownlinkConfig/>
+</CodeGroup>
+
+## Returns
+`any`
+
+## Parameters
+
+### query
+- **type**: `DocumentNode`
+
+The query to execute.
+```typescript
+import { TokenFragment } from "@tx-kit/sdk/subgraph"
+
+const data = await downlinkClient.customQuery({
+    gql`
+        query {
+            channels(limit: 10) {
+                id
+                tokens(first: 10) {
+                    ...TokenFragment
+                }
+            }   
+            ${TOKEN_FRAGMENT}
+        }`,
+    ...
+})
+```
+
+### variables (optional)
+- **type**: `GqlVariables`
+
+Variables to pass to the query
+
+```typescript
+type GqlVariables = {
+    [key: string]: string | number | boolean | undefined | string[] | object
+}
+```
+
+```typescript
+const data = await downlinkClient.customQuery(
+    gql`
+        query($timestamp: Int!) {
+            channels(
+                where: { tokens_: { blockTimestamp_gt: $timestamp } }
+                limit: 10
+            ) {
+                id
+                tokens(first: 10) {
+                    ...TokenFragment
+                }
+            }   
+            ${TOKEN_FRAGMENT}
+        }`,
+    { timestamp: Math.floor(Date.now() / 1000) - 60 * 60 * 24 * 7 } // 1 week
+)
+```

@@ -1,0 +1,166 @@
+---
+title: Quick Start
+description: 'Get up and running with the tx-kit react hooks'
+---
+
+import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
+
+## Installation
+
+<CodeGroup>
+```bash yarn 
+yarn add @tx-kit/hooks viem wagmi
+```
+```bash npm 
+npm install @tx-kit/hooks viem wagmi
+```
+```bash bun 
+bun add @tx-kit/hooks viem wagmi
+```
+```bash pnpm 
+pnpm add @tx-kit/hooks viem wagmi
+```
+</CodeGroup>
+
+## Import
+
+```javascript
+import { ... } from '@tx-kit/hooks'
+```
+
+## Transmissions Client Context
+
+The hooks packages provides a `React.Context` that can be used to access the transmissions client in a react component tree. The context provider should wrap your component tree beneath your wallet providers.
+Below is an example using the NextJS app router, rainbowkit, and coinbase smart wallet. The context provider pairs very nicely with wagmi hooks.
+<CodeGroup>
+```typescript Component.tsx
+"use client";
+import { useWalletClient } from "wagmi";
+import { useMintTokenBatchWithETH } from "@tx-kit/hooks";
+
+const MyMinterComponent = () => {
+    const { walletClient } = useWalletClient()
+    const { 
+        mintTokenBatchWithETH, 
+        status, 
+        txHash,
+        error 
+    } = useMintTokenBatchWithETH()
+
+    const handleMint = () => {
+        mintTokenBatchWithETH({
+            channelAddress: '0xTargetChannel',
+            to: walletClient.account.address,
+            tokenIds: [1n],
+            amounts: [1n]
+        })
+    }
+
+    return <button onClick={handleMint}>Mint</button>
+}
+```
+<ContextConfigSnippet/>
+</CodeGroup>
+
+### Usage
+
+```typescript
+import { useTransmissionsClient } from '@tx-kit/hooks';
+import { SUPPORTED_CHAIN_IDS } from '@tx-kit/sdk';
+import { useMemo } from 'react';
+import { useChainId, usePublicClient, useWalletClient } from 'wagmi';
+
+const chainId = useChainId();
+const { data: walletClient, status } = useWalletClient();
+const publicClient = usePublicClient();
+
+const transmissionsClientConfig = useMemo(() => ({
+    chainId: SUPPORTED_CHAIN_IDS.includes(chainId) ? chainId : 8453,
+    walletClient: walletClient,
+    publicClient: publicClient,
+    paymasterConfig: {
+        paymasterUrl: '/paymaster_proxy',
+    }
+}), [chainId, walletClient, publicClient]);
+
+useTransmissionsClient(transmissionsClientConfig);
+```
+### Returns
+```TranmissionsClient```
+
+### Parameters
+
+#### chainId
+- **type**: `8453 | 84532`
+
+The chain id of the target chain
+```typescript
+import { useTransmissionsClient } from '@tx-kit/hooks'
+
+useTransmissionsClient({
+    chainId: 8453,
+    ...
+});
+```
+
+#### publicClient (optional)
+- **type**: `PublicClient<Transport, Chain>`
+
+The public client to use for public data requests. Some methods require a public client to be provided.
+```typescript
+import { createPublicClient, http } from 'viem'
+import { useTransmissionsClient } from '@tx-kit/hooks'
+
+const publicClient: createPublicClient({
+    chain: base,
+    transport: http()
+})
+
+useTransmissionsClient({
+    publicClient,
+    ...
+});
+```
+
+#### walletClient (optional)
+- **type**: `WalletClient<Transport, Chain, Account>`
+
+The wallet client to use for modifying blockchain state. Most uplink methods require a wallet client to be provided.
+```typescript
+import { createWalletClient, http } from 'viem'
+import { useTransmissionsClient } from '@tx-kit/hooks'
+
+const walletClient: createWalletClient({
+    chain: base,
+    transport: http(),
+    account: Account // from local private key or browser wallet
+})
+
+useTransmissionsClient({
+    walletClient,
+    ...
+});
+```
+
+#### paymasterConfig (optional)
+- **type**: `PaymasterConfig`
+
+```typescript
+type PaymasterConfig = {
+    paymasterUrl?: string
+}
+```
+
+The paymaster configuration object for the wallet client. This object contains the paymaster url for a paymaster proxy. The default value is undefined.
+See the [paymasters](https://www.smartwallet.dev/guides/paymasters) section of the coinbase smart wallet docs.
+
+```typescript
+import { useTransmissionsClient } from '@tx-kit/hooks'
+
+useTransmissionsClient({
+    paymasterConfig: {
+        paymasterUrl: 'https://example_server/paymaster_proxy'
+    }
+    ...
+})
+```

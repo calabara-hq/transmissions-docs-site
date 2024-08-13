@@ -1,0 +1,162 @@
+---
+title: sponsorTokenWithERC20
+description: Sponsor a [token intent](./createTokenIntent.mdx) with ERC20.
+---
+
+This function will revert under the following conditions:
+- The channel does not allow ERC20 minting.
+- The caller does not fulfill any of the channel `creatorLogic[]` rules.
+- The caller does not fulfill any of the channel `minterLogic[]` rules.
+- The caller does not have the required ERC20 balance to mint the tokens.
+- The caller has not approved the channel to spend the required ERC20 balance.
+
+import UplinkConfig from '/snippets/uplink-js-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript app.ts
+import { uplinkClient } from './config'
+
+const signedIntent = { ... }
+
+const { event } = await uplinkClient.sponsorTokenWithERC20({
+    channelAddress: '0x123...',
+    sponsoredToken: signedIntent,
+    to: '0x123...',
+    amount: 1n,
+    mintReferral: '0x123...',
+    data: '0x00..',
+})
+```
+<UplinkConfig/>
+</CodeGroup>
+
+## Returns
+```typescript
+{ 
+  tokenId: bigint, // the token ID of the newly created token
+  event: Log 
+}
+```
+
+## Parameters
+
+### channelAddress
+- **type**: `string`
+
+The target channel address
+```typescript
+const { event } = await uplinkClient.sponsorTokenWithERC20({
+  channelAddress: '0x1234567890123456789012345678901234567890',
+  ...
+})
+```
+
+### to
+- **type**: `string`
+
+The recipient of the minted tokens
+```typescript
+const { event } = await uplinkClient.sponsorTokenWithERC20({
+  to: '0x1234567890123456789012345678901234567890',
+  ...
+})
+```
+
+### tokenId
+- **type**: `bigint`
+
+The token ID to mint
+```typescript
+const { event } = await uplinkClient.sponsorTokenWithERC20({
+  tokenId: 1n,
+  ...
+})
+```
+
+### amount
+- **type**: `bigint`
+
+The amount to mint
+```typescript
+const { event } = await uplinkClient.sponsorTokenWithERC20({
+  amount: 1n,
+  ...
+})
+```
+
+### mintReferral (optional)
+- **type**: `string`
+
+The referral address for the mint
+```typescript
+const { event } = await uplinkClient.sponsorTokenWithERC20({
+  mintReferral: '0x1234567890123456789012345678901234567890',
+  ...
+})
+```
+
+### data (optional)
+
+- **type**: `string`
+
+Additional data for the mint
+```typescript
+const { event } = await uplinkClient.sponsorTokenWithERC20
+({
+  data: '0x00...',
+  ...
+})
+```
+
+### transactionOverrides (optional)
+- **type**: `TransactionOverrides`
+```typescript
+type TransactionOverrides = {
+  accessList?: AccessList
+  gas?: bigint
+  maxFeePerGas?: bigint
+  maxPriorityFeePerGas?: bigint
+  nonce?: number
+  value?: bigint
+}
+```
+
+Overrides for the transaction
+
+```typescript
+const { event } = await uplinkClient.sponsorTokenWithERC20({
+    ...
+    transactionOverrides: {
+        gas: 1000000nn
+    }
+})
+```
+## Calldata
+
+generate calldata for the transaction
+
+```typescript
+const { address, data } = await uplinkClient.calldata.sponsorTokenWithERC20({...})
+```
+
+### Returns 
+```typescript
+{
+    address: string, // address of the target contract
+    data: string // calldata for the transaction
+}
+```
+
+## Gas Estimation
+
+Estimate gas for the transaction
+
+```typescript
+const gas = await uplinkClient.estimateGas.sponsorTokenWithERC20({...})
+```
+
+### Returns
+```typescript
+bigint // gas estimate in wei
+```

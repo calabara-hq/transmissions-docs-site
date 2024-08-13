@@ -1,0 +1,142 @@
+---
+title: updateChannelFees
+description: Update the minting fees and protocol reward splits for a deployed channel
+---
+
+import UplinkConfig from '/snippets/uplink-js-config.mdx'
+
+## Usage
+<CodeGroup>
+    ```typescript app.js
+    import { uplinkClient } from './config'
+    import { CUSTOM_FEES } from '@tx-kit/sdk/constants'
+
+    const channelAddress = '0x1234567890123456789012345678901234567890'
+    const feeContract = CUSTOM_FEES
+    const feeArgs = {
+        channelTreasury: '0x1234567890123456789012345678901234567890',
+        uplinkPercentage: 10,
+        channelPercentage: 15,
+        creatorPercentage: 60,
+        mintReferralPercentage: 5,
+        sponsorPercentage: 10,
+        ethMintPrice: parseEther('0.000666'),
+        erc20MintPrice: parseEther('0.000666'),
+        erc20Contract: baseSepoliaWETH
+    }
+
+    const { event } = await uplinkClient.updateChannelFees({
+        channelAddress,
+        { feeContract, feeArgs }
+    })
+    ```
+    <UplinkConfig/>
+</CodeGroup>
+
+## Returns
+```typescript
+{ 
+  event: Log 
+}
+```
+
+## Parameters
+
+### channelAddress
+- **type**: `string`
+
+The target channel address
+```typescript
+const { event } = await uplinkClient.updateChannelFees({
+  channelAddress: '0x1234567890123456789012345678901234567890',
+  ...
+})
+```
+
+### feeContract
+- **type**: `string`
+
+The address of the fee contract to use. Use `CUSTOM_FEES` for the default fee contract, or address zero to disable fees.
+```typescript
+const { event } = await uplinkClient.updateChannelFees({
+  { feeContract: CUSTOM_FEES, ... },
+  ...
+})
+```
+
+### feeArgs
+- **type**: `CustomFeeInputs | null`
+
+The fee configuration to apply. If `feeContract` is set to address zero, this parameter is ignored.
+```typescript
+const { event } = await uplinkClient.updateChannelFees({
+  { 
+    feeContract: CUSTOM_FEES,
+    feeArgs: {
+        channelTreasury: '0x123...' // channel treasury address
+        uplinkPercentage: 10 // protocol reward split percentage
+        channelPercentage: 10 // channel reward split percentage
+        creatorPercentage: 60 // creator reward split percentage
+        mintReferralPercentage: 10 // mint referral reward split percentage
+        sponsorPercentage: 10 // sponsor reward split percentage
+        ethMintPrice: parseEther('0.000666') // ETH mint price
+        erc20MintPrice: BigInt(0) // ERC20 mint price
+        erc20Contract: zeroAddress // ERC20 contract address
+    },
+   },
+  ...
+})
+```
+
+### transactionOverrides (optional)
+- **type**: `TransactionOverrides`
+```typescript
+type TransactionOverrides = {
+  accessList?: AccessList
+  gas?: bigint
+  maxFeePerGas?: bigint
+  maxPriorityFeePerGas?: bigint
+  nonce?: number
+  value?: bigint
+}
+```
+
+Overrides for the transaction
+
+
+```typescript
+const { contractAddress } = await uplinkClient.updateChannelFees({
+    ...
+    transactionOverrides: {
+        gas: 1000000n
+    }
+})
+```
+## Calldata
+
+generate calldata for the transaction
+
+```typescript
+const { address, data } = await uplinkClient.calldata.updateChannelFees({...})
+```
+
+### Returns 
+```typescript
+{
+    address: string, // address of the target contract
+    data: string // calldata for the transaction
+}
+```
+
+## Gas Estimation
+
+Estimate gas for the transaction
+
+```typescript
+const gas = await uplinkClient.estimateGas.updateChannelFees({...})
+```
+
+### Returns
+```typescript
+bigint // gas estimate in wei
+```

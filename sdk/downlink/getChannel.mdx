@@ -1,0 +1,63 @@
+---
+title: getChannel
+description: Fetch a channel by address
+---
+
+import DownlinkConfig from '/snippets/downlink-js-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript app.ts
+import { downlinkClient } from './config'
+
+const data = await downlinkClient.getChannel({
+    channelAddress: '0x1234567890123456789012345678901234567890'
+})
+```
+<DownlinkConfig/>
+</CodeGroup>
+
+## Returns
+`IChannel | undefined`
+
+```typescript
+type IChannel = {
+    id: Address
+    uri: string
+    name: string
+    admin: Address
+    managers: Address[]
+    transportLayer: ITransportLayer
+    creatorLogic: ILogicConfig | null
+    minterLogic: ILogicConfig | null
+    fees: IFeeConfig | null
+    tokens: IToken[]
+    blockNumber?: bigint
+    blockTimestamp?: bigint
+}
+```
+## Parameters
+
+### channelAddress
+- **type**: `string`
+
+The target channel address.
+```typescript
+const data = await downlinkClient.getChannel({
+    channelAddress: '0x1234567890123456789012345678901234567890',
+    ...
+})
+```
+
+### includeTokens (optional)
+- **type**: `boolean` 
+- **default**: `false`
+
+Include tokens in the response.
+```typescript
+const data = await downlinkClient.getChannel({
+    channelAddress: '0x1234567890123456789012345678901234567890',
+    includeTokens: true,
+  ...
+})
+```

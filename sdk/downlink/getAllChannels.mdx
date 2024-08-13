@@ -1,0 +1,80 @@
+---
+title: getAllChannels
+description: Fetch many channels
+---
+
+import DownlinkConfig from '/snippets/downlink-js-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript app.ts
+import { downlinkClient } from './config'
+
+const data = await downlinkClient.getAllChannels()
+```
+<DownlinkConfig/>
+</CodeGroup>
+
+## Returns
+`IChannel[]`
+
+```typescript
+type IChannel = {
+    id: Address
+    uri: string
+    name: string
+    admin: Address
+    managers: Address[]
+    transportLayer: ITransportLayer
+    creatorLogic: ILogicConfig | null
+    minterLogic: ILogicConfig | null
+    fees: IFeeConfig | null
+    tokens: IToken[]
+    blockNumber?: bigint
+    blockTimestamp?: bigint
+}
+```
+## Parameters
+
+### includeTokens (optional)
+- **type**: `boolean` 
+- **default**: `false`
+
+Include tokens in the response.
+```typescript
+const data = await downlinkClient.getChannel({
+    channelAddress: '0x1234567890123456789012345678901234567890',
+    includeTokens: true,
+  ...
+})
+```
+
+### filters (optional)
+- **type**: `Filters`
+
+Filters to apply to the query.
+
+```typescript
+type Filters = {
+    where?: GqlVariables
+    orderBy?: string
+    orderDirection?: string
+    pageSize?: number
+    skip?: number
+}
+```
+
+```typescript
+// Fetch all channels with infinite transport layer type
+const data = await downlinkClient.getAllChannels(
+    {
+        filters: {
+            where: {
+                transportLayer_: {
+                    type: "infinite"
+                },
+            }
+        }
+    }
+)
+```

@@ -70,16 +70,47 @@
           "pages": [
             "sdk/quickstart",
             {
-              "group": "Uplink",
+              "group": "Uplink client",
               "pages": [
-                "sdk/uplink/channels",
-                "sdk/uplink/tokens",
+                "sdk/uplink/channels/createInfiniteChannel",
+                "sdk/uplink/channels/createFiniteChannel",
+                "sdk/uplink/channels/updateChannelFees",
+                "sdk/uplink/channels/updateChannelLogic",
+                "sdk/uplink/channels/updateChannelMetadata",
+                "sdk/uplink/channels/updateInfiniteChannelTransportLayer",
+                "sdk/uplink/channels/settleFiniteChannel",
+                "sdk/uplink/tokens/createToken",
+                "sdk/uplink/tokens/createTokenIntent",
+                "sdk/uplink/tokens/mintTokenBatchWithETH",
+                "sdk/uplink/tokens/mintTokenBatchWithERC20",
+                "sdk/uplink/tokens/sponsorTokenWithETH",
+                "sdk/uplink/tokens/sponsorTokenWithERC20",
                 "sdk/uplink/upgrades"
+              ]
+            },
+            {
+              "group": "Downlink client",
+              "pages": [
+                "sdk/downlink/getChannel",
+                "sdk/downlink/getAllChannels",
+                "sdk/downlink/getChannelTokenPage",
+                "sdk/downlink/getOptimalUpgradePath",
+                "sdk/downlink/customQuery"
               ]
             }
           ]
         },
-        "React Hooks",
+        {
+          "group": "React Hooks",
+          "pages": [
+            "hooks/quickstart",
+            "hooks/useCreateInfiniteChannel",
+            "hooks/useCreateFiniteChannel",
+            "hooks/useUpdateChannelFees",
+            "hooks/useUpdateChannelMetadata",
+            "hooks/useUpdateInfiniteChannelTransportLayer"
+          ]
+        },
         "subgraph"
       ]
     },

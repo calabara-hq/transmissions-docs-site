@@ -1,0 +1,65 @@
+---
+title: useUpdateChannelFees
+description: Update the fees and reward splits for a deployed channel
+---
+
+import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript Component.tsx
+"use client";
+import { useUpdateChannelFees } from "@tx-kit/hooks";
+
+const MyMinterComponent = () => {
+    const { 
+        updateChannelFees, 
+        status, 
+        txHash,
+        error 
+    } = updateChannelFees()
+
+    const onClick = () => {
+        updateChannelFees({ ... })
+    }
+
+    return <button onClick={onClick}>Create Channel</button>
+}
+```
+<ContextConfigSnippet/>
+</CodeGroup>
+
+## Returns
+
+### updateChannelFees
+
+Function to update the fees and reward splits for a deployed channel. See [updateChannelFees](/sdk/uplink/channels/updateChannelFees) args.
+
+- **type**: `({
+    channelAddress,
+    feeContract,
+    feeArgs
+    }: SetChannelFeeConfig) => Promise<Log[] | undefined>`
+
+### status
+
+- **type**: `ContractExecutionStatus`
+```typescript
+type ContractExecutionStatus =
+  | 'pendingApproval'
+  | 'txInProgress'
+  | 'complete'
+  | 'error'
+```
+
+the status of the transaction
+
+### txHash
+- **type**: `string`
+
+the transaction hash of the transaction
+
+### error
+- **type**: `any`
+
+the revert message if the transaction fails

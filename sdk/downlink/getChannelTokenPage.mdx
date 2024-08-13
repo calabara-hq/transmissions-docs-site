@@ -1,0 +1,67 @@
+---
+title: getChannelTokenPage
+description: Fetch a paginated list of tokens for a channel
+---
+
+import DownlinkConfig from '/snippets/downlink-js-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript app.ts
+import { downlinkClient } from './config'
+
+const data = await downlinkClient.getChannelTokenPage({
+    channelAddress: '0x1234567890123456789012345678901234567890'
+})
+```
+<DownlinkConfig/>
+</CodeGroup>
+
+## Returns
+`IToken[]`
+
+```typescript
+type IToken = {
+    id: string
+    channelAddress: Address
+    tokenId: bigint
+    author: Address
+    sponsor: Address
+    uri: string
+    metadata: ITokenMetadata | null
+    totalMinted: bigint
+    maxSupply: bigint
+    blockNumber?: bigint
+    blockTimestamp?: bigint
+}
+```
+## Parameters
+
+### filters (optional)
+- **type**: `Filters`
+
+Filters to apply to the query.
+
+```typescript
+type Filters = {
+    where?: GqlVariables
+    orderBy?: string
+    orderDirection?: string
+    pageSize?: number
+    skip?: number
+}
+```
+
+```typescript
+// Fetch all channels with infinite transport layer type
+const data = await downlinkClient.getChannelTokenPage({
+    channelAddress: contractAddress,
+    filters: {
+        pageSize: 100, // fetch 100 tokens
+        skip: 0, // skip 0 tokens
+        where: {
+            tokenId_not_in: ["0"] // ignore token zero
+        }
+    }
+    })
+```

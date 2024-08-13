@@ -1,0 +1,70 @@
+---
+title: useCreateInfiniteChannel
+description: Create a new infinite channel
+---
+
+import ContextConfigSnippet from '/snippets/hooks-context-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript Component.tsx
+"use client";
+import { useCreateInfiniteChannel } from "@tx-kit/hooks";
+
+const MyMinterComponent = () => {
+    const { 
+        createInfiniteChannel, 
+        status, 
+        txHash,
+        error 
+    } = useCreateInfiniteChannel()
+
+    const onClick = () => {
+        createInfiniteChannel({ ... })
+    }
+
+    return <button onClick={onClick}>Create Channel</button>
+}
+```
+<ContextConfigSnippet/>
+</CodeGroup>
+
+
+## Returns
+### createInfiniteChannel
+Function to create a new infinite channel. See [createInfiniteChannel](/sdk/uplink/channels/createInfiniteChannel) args.
+
+- **type**: `({
+    uri,
+    name,
+    defaultAdmin,
+    managers,
+    transportLayer,
+    setupActions
+    }: CreateInfiniteChannelConfig) => Promise<Log[] | undefined>`
+
+### status
+- **type**: `ContractExecutionStatus`
+```typescript
+type ContractExecutionStatus =
+  | 'pendingApproval'
+  | 'txInProgress'
+  | 'complete'
+  | 'error'
+```
+the status of the transaction
+
+### channelAddress
+- **type**: `Address`
+
+the address of the new channel
+
+### txHash
+- **type**: `string`
+
+the transaction hash of the transaction
+
+### error
+- **type**: `any`
+
+the revert message if the transaction fails

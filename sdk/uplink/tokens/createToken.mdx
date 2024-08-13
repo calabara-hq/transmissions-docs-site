@@ -1,0 +1,116 @@
+---
+title: createToken
+description: Create a new token in the channel. This function will revert if the caller does not fulfill any of the channel `creatorLogic[]` rules.
+---
+import UplinkConfig from '/snippets/uplink-js-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript app.ts
+import { uplinkClient } from './config'
+
+const { tokenId, event } = await uplinkClient.createToken({
+    channelAddress: '0x1234567890123456789012345678901234567890',
+    uri: 'new token uri',
+    maxSupply: 100n
+})
+```
+<UplinkConfig/>
+</CodeGroup>
+
+## Returns
+```typescript
+{ 
+  tokenId: bigint,
+  event: Log 
+}
+```
+
+## Parameters
+
+### channelAddress
+- **type**: `string`
+
+The target channel address
+```typescript
+const { tokenId, event } = await uplinkClient.createToken({
+  channelAddress: '0x1234567890123456789012345678901234567890',
+  ...
+})
+```
+### uri
+- **type**: `string`
+
+The metadata URI of the token
+```typescript
+const { tokenId, event } = await uplinkClient.createToken({
+  uri: 'new token uri',
+  ...
+})
+```
+
+### maxSupply
+- **type**: `bigint`
+
+The maximum supply of the token
+```typescript
+const { tokenId, event } = await uplinkClient.createToken({
+  maxSupply: 100n,
+  ...
+})
+```
+
+### transactionOverrides (optional)
+- **type**: `TransactionOverrides`
+```typescript
+type TransactionOverrides = {
+  accessList?: AccessList
+  gas?: bigint
+  maxFeePerGas?: bigint
+  maxPriorityFeePerGas?: bigint
+  nonce?: number
+  value?: bigint
+}
+```
+
+Overrides for the transaction
+
+
+```typescript
+const { tokenId, event } = await uplinkClient.createToken({
+    ...
+    transactionOverrides: {
+        gas: 1000000n
+    }
+})
+```
+
+## Calldata
+
+generate calldata for the transaction
+
+```typescript
+const { address, data } = await uplinkClient.calldata.createToken({...})
+```
+
+### Returns 
+```typescript
+{
+    address: string, // address of the target contract
+    data: string // calldata for the transaction
+}
+```
+
+## Gas Estimation
+
+Estimate gas for the transaction
+
+```typescript
+const gas = await uplinkClient.estimateGas.createToken({...})
+```
+
+### Returns
+```typescript
+bigint // gas estimate in wei
+```
+

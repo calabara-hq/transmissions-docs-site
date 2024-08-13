@@ -1,0 +1,231 @@
+---
+title: updateChannelLogic
+description: Update the creator and minter rules for a deployed channel
+---
+import UplinkConfig from '/snippets/uplink-js-config.mdx'
+
+
+## Usage
+<CodeGroup>
+```typescript app.ts
+import { uplinkClient } from './config'
+import { creatorLogic, minterLogic } from './args'
+import { DYNAMIC_LOGIC } from '@tx-kit/sdk/constants'
+
+const { event } = await uplinkClient.updateChannelLogic({ 
+    channelAddress: '0x1234567890123456789012345678901234567890', 
+    { 
+        logicContract: DYNAMIC_LOGIC, 
+        creatorLogic,
+        minterLogic 
+    }
+})
+```
+```typescript args.ts
+const erc20BalanceOfData = encodeAbiParameters(
+    [{ type: "address", name: "address" }],
+    [zeroAddress] // zero address placeholder swapped for caller address at runtime
+) 
+
+// give each creator 10 interaction credits if they hold 1 or more WETH tokens
+
+export const creatorLogic = [{
+    target: baseSepoliaWETH,
+    signature: '0x70a08231',
+    data: erc20BalanceOfData,
+    operator: LogicOperators.gt,
+    literalOperand: BigInt(1),
+    interactionPowerType: LogicInteractionPowerTypes.uniform,
+    interactionPower: BigInt(10)
+}]
+
+// give each minter 10 interaction credits if they hold 1 or more WETH tokens
+
+export const minterLogic = [{
+    target: baseSepoliaWETH,
+    signature: '0x70a08231',
+    data: erc20BalanceOfData,
+    operator: LogicOperators.gt,
+    literalOperand: BigInt(1),
+    interactionPowerType: LogicInteractionPowerTypes.uniform,
+    interactionPower: BigInt(10)
+}]
+```
+<UplinkConfig/>
+</CodeGroup>
+
+## Returns
+```typescript
+{ 
+  event: Log 
+}
+```
+
+## Parameters
+
+### channelAddress
+- **type**: `string`
+
+The target channel address
+```typescript
+const { event } = await uplinkClient.updateChannelLogic({
+  channelAddress: '0x1234567890123456789012345678901234567890',
+  ...
+})
+```
+### logicContract
+- **type**: `string`
+
+The address of the logic contract to use. Use `DYNAMIC_LOGIC` for the default logic contract, or address zero to disable all logic. Disabling logic means that everyone has unlimited interaction credits.
+```typescript
+const { event } = await uplinkClient.updateChannelLogic({
+  { logicContract: DYNAMIC_LOGIC, ... },
+  ...
+})
+```
+
+### creatorLogic
+- **type**: `DynamicLogicInputs[]`
+
+An array of creator logic rules. For the `DYNAMIC_LOGIC` contract, each rule specifies a target contract, function signature, data, operator, literal operand, interaction power type, and interaction power. Logic rules can be created by hand, or with the `UniformInteractionPower` and `WeightedInteractionPower` utilities.
+
+Weighted interaction power rules can be used to give more interaction credits to users who hold more tokens. Uniform interaction power rules give the same number of interaction credits to all users who meet the rule's conditions.
+
+If a user meets multiple logic rules, the highest interaction power from all rules is applied.
+
+```typescript
+
+const erc20BalanceOfData = encodeAbiParameters(
+    [{ type: "address", name: "address" }],
+    [zeroAddress] // zero address placeholder swapped for caller address at runtime
+)
+
+const creatorLogic = [{
+    target: baseSepoliaWETH, // target contract to query for logic
+    signature: '0x70a08231', // function signature to query for logic
+    data: erc20BalanceOfData, // data to pass to the function
+    operator: LogicOperators.gt, // operator to apply to the result
+    literalOperand: BigInt(1), // operand to compare the result to
+    interactionPowerType: LogicInteractionPowerTypes.uniform, // type of interaction power to apply
+    interactionPower: BigInt(10) // interaction power to apply
+}]
+
+// with the `UniformInteractionPower` utility
+const creatorLogic = [
+    new UniformInteractionPower(BigInt(10))
+        .ifResultOf(baseSepoliaWETH, '0x70a08231', erc20BalanceOfData)
+        .gt(BigInt(1))
+]
+
+// with the `WeightedInteractionPower` utility
+const creatorLogic = [
+    new WeightedInteractionPower()
+        .ifResultOf(baseSepoliaWETH, '0x70a08231', erc20BalanceOfData)
+        .gt(BigInt(1))
+]
+
+const { event } = await uplinkClient.updateChannelLogic({
+  { logicContract: DYNAMIC_LOGIC, creatorLogic, ... },
+  ...
+})
+
+```
+
+### minterLogic
+- **type**: `DynamicLogicInputs[]`
+
+An array of minter logic rules for the `DYNAMIC_LOGIC` contract. Logic rules can be created by hand, or with the `UniformInteractionPower` and `WeightedInteractionPower` utilities. 
+
+Weighted interaction power rules can be used to give more interaction credits to users who hold more tokens. Uniform interaction power rules give the same number of interaction credits to all users who meet the rule's conditions.
+
+If a user meets multiple logic rules, the highest interaction power from all rules is applied.
+
+```typescript
+const erc20BalanceOfData = encodeAbiParameters(
+    [{ type: "address", name: "address" }],
+    [zeroAddress] // zero address placeholder swapped for caller address at runtime
+)
+
+const minterLogic = [{
+    target: baseSepoliaWETH, // target contract to query for logic
+    signature: '0x70a08231', // function signature to query for logic
+    data: erc20BalanceOfData, // data to pass to the function
+    operator: LogicOperators.gt, // operator to apply to the result
+    literalOperand: BigInt(1), // operand to compare the result to
+    interactionPowerType: LogicInteractionPowerTypes.uniform, // type of interaction power to apply
+    interactionPower: BigInt(10) // interaction power to apply
+}]
+
+// with the `UniformInteractionPower` utility
+const minterLogic = [
+    new UniformInteractionPower(BigInt(10))
+        .ifResultOf(baseSepoliaWETH, '0x70a08231', erc20BalanceOfData)
+        .gt(BigInt(1))
+]
+
+// with the `WeightedInteractionPower` utility
+const minterLogic = [
+    new WeightedInteractionPower()
+        .ifResultOf(baseSepoliaWETH, '0x70a08231', erc20BalanceOfData)
+        .gt(BigInt(1))
+]
+
+const { event } = await uplinkClient.updateChannelLogic({
+  { logicContract: DYNAMIC_LOGIC, minterLogic, ... },
+  ...
+})
+
+```
+
+### transactionOverrides (optional)
+- **type**: `TransactionOverrides`
+```typescript
+type TransactionOverrides = {
+  accessList?: AccessList
+  gas?: bigint
+  maxFeePerGas?: bigint
+  maxPriorityFeePerGas?: bigint
+  nonce?: number
+  value?: bigint
+}
+```
+
+Overrides for the transaction
+
+
+```typescript
+const { event } = await uplinkClient.updateChannelLogic({
+    ...
+    transactionOverrides: {
+        gas: 1000000n
+    }
+})
+```
+## Calldata
+
+generate calldata for the transaction
+
+```typescript
+const { address, data } = await uplinkClient.calldata.updateChannelLogic({...})
+```
+
+### Returns 
+```typescript
+{
+    address: string, // address of the target contract
+    data: string // calldata for the transaction
+}
+```
+
+## Gas Estimation
+
+Estimate gas for the transaction
+
+```typescript
+const gas = await uplinkClient.estimateGas.updateChannelLogic({...})
+```
+
+### Returns
+```typescript
+bigint // gas estimate in wei
+```

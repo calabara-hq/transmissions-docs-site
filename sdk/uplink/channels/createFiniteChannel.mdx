@@ -1,0 +1,232 @@
+---
+title: createFiniteChannel
+description: Create a new finite channel
+---
+import UplinkConfig from '/snippets/uplink-js-config.mdx'
+
+
+## Usage
+<CodeGroup>
+```typescript app.js
+import { DYNAMIC_LOGIC, CUSTOM_FEES } from '@tx-kit/sdk/constants'
+import { uplinkClient } from './config'
+import { 
+    uri, 
+    name, 
+    defaultAdmin, 
+    managers,
+    transportLayer, 
+    setupActions 
+} from './args'
+
+const { contractAddress } = await uplinkClient.createFiniteChannel({
+    uri,
+    name,
+    defaultAdmin,
+    managers,
+    transportLayer,
+    setupActions
+})
+```
+```typescript args.ts
+import { DYNAMIC_LOGIC, CUSTOM_FEES } from '@tx-kit/sdk/constants'
+
+export const uri = 'ipfs://xyz'
+export const name = 'My new channel'
+export const defaultAdmin = '0xedcC867bc8B5FEBd0459af17a6f134F41f422f0C'
+export const managers = ['0x1234567890123456789012345678901234567890']
+
+export const transportLayer = {
+    createStartInSeconds: blockTimestamp,
+    mintStartInSeconds: blockTimestamp + 30,
+    mintEndInSeconds: blockTimestamp + 60,
+    rewards: {
+        ranks: [1],
+        allocations: [parseEther('0.000777')],
+        totalAllocation: parseEther('0.000777'),
+        token: NATIVE_TOKEN
+    }
+}
+
+export const setupActions = [
+{
+    feeContract: CUSTOM_FEES,
+    feeArgs: {
+        channelTreasury: '0x1234567890123456789012345678901234567890',
+        uplinkPercentage: 10,
+        channelPercentage: 15,
+        creatorPercentage: 60,
+        mintReferralPercentage: 5,
+        sponsorPercentage: 10,
+        ethMintPrice: parseEther('0.000666'),
+        erc20MintPrice: parseEther('0.000666'),
+        erc20Contract: baseSepoliaWETH
+    }
+},
+{
+    logicContract: DYNAMIC_LOGIC,
+    creatorLogic: [new UniformInteractionPower(BigInt(10)).ifResultOf(baseSepoliaWETH, '0x70a08231', erc20BalanceOfData).gt(BigInt(1))],
+    minterLogic: [new UniformInteractionPower(BigInt(10)).ifResultOf(baseSepoliaWETH, '0x70a08231', erc20BalanceOfData).gt(BigInt(1))]
+}]
+```
+<UplinkConfig/>
+</CodeGroup>
+
+## Returns
+``` typescript
+{ 
+  contractAddress: Address, // address of the created channel
+  event: Log 
+}
+```
+
+## Parameters
+
+### uri
+- **type**: `string`
+
+The metadata URI of the channel
+```typescript
+const { contractAddress } = await uplinkClient.createFiniteChannel({
+    uri: 'ipfs://xyz',
+    ...
+})
+```
+
+### name
+- **type**: `string`
+
+The name of the channel
+```typescript
+const { contractAddress } = await uplinkClient.createFiniteChannel({
+    name: 'My new channel',
+    ...
+})
+```
+
+### defaultAdmin
+- **type**: `string`
+
+The address of the default admin. Admins can update channel metadata, fees, and logic and add or remove managers.
+```typescript
+const { contractAddress } = await uplinkClient.createFiniteChannel({
+    defaultAdmin: '0xedcC867bc8B5FEBd0459af17a6f134F41f422f0C',
+    ...
+})
+```
+
+### managers
+- **type**: `string[]`
+
+An array of manager addresses. Managers can update channel metadata, fees, and logic.
+```typescript
+const { contractAddress } = await uplinkClient.createFiniteChannel({
+    managers: ['0x1234567890123456789012345678901234567890'],
+    ...
+})
+```
+
+### setupActions
+- **type**: `SetupAction[]`
+
+An array of channel fee and logic configurations
+```typescript
+const { contractAddress } = await uplinkClient.createFiniteChannel({
+    setupActions: [
+        {
+        feeContract: CUSTOM_FEES,
+        feeArgs: {
+            channelTreasury: '0x1234567890123456789012345678901234567890',
+            uplinkPercentage: 10,
+            channelPercentage: 15,
+            creatorPercentage: 60,
+            mintReferralPercentage: 5,
+            sponsorPercentage: 10,
+            ethMintPrice: parseEther('0.000666'),
+            erc20MintPrice: parseEther('0.000666'),
+            erc20Contract: baseSepoliaWETH
+        }
+    },
+    {
+        logicContract: DYNAMIC_LOGIC,
+        creatorLogic: [new UniformInteractionPower(BigInt(10)).ifResultOf(baseSepoliaWETH, '0x70a08231', erc20BalanceOfData).gt(BigInt(1))],
+        minterLogic: [new UniformInteractionPower(BigInt(10)).ifResultOf(baseSepoliaWETH, '0x70a08231', erc20BalanceOfData).gt(BigInt(1))]
+    }
+    ],
+    ...
+})
+```
+
+### transportLayer
+- **type**: `FiniteTransportLayer`
+
+The transport layer configuration. Set the timing and reward criteria for the channel.
+``` typescript
+const { contractAddress } = await uplinkClient.createFiniteChannel({
+    transportLayer: {
+        createStartInSeconds: blockTimestamp,
+        mintStartInSeconds: blockTimestamp + 30,
+        mintEndInSeconds: blockTimestamp + 60,
+        rewards: {
+            ranks: [1],
+            allocations: [parseEther('0.000666')],
+            totalAllocation: parseEther('0.000666'),
+            token: NATIVE_TOKEN
+        }
+    },
+    ...
+})
+```
+
+
+### transactionOverrides (optional)
+- **type**: `TransactionOverrides`
+```typescript
+type TransactionOverrides = {
+  accessList?: AccessList
+  gas?: bigint
+  maxFeePerGas?: bigint
+  maxPriorityFeePerGas?: bigint
+  nonce?: number
+  value?: bigint
+}
+```
+Overrides for the transaction
+
+```typescript
+const { contractAddress } = await uplinkClient.createFiniteChannel({
+    ...
+    transactionOverrides: {
+        gas: 1000000n
+    }
+})
+```
+
+## Calldata
+
+generate calldata for the transaction
+
+```typescript
+const { address, data } = await uplinkClient.calldata.createFiniteChannel({...})
+```
+
+### Returns 
+```typescript
+{
+    address: string, // address of the target contract
+    data: string // calldata for the transaction
+}
+```
+
+## Gas Estimation
+
+Estimate gas for the transaction
+
+```typescript
+const gas = await uplinkClient.estimateGas.createFiniteChannel({...})
+```
+
+### Returns
+```typescript
+bigint // gas estimate in wei
+```

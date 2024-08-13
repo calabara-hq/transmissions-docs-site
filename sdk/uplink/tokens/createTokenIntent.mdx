@@ -1,0 +1,98 @@
+---
+title: signDeferredTokenIntent
+description: Create a signed EIP-712 token intent. This intent can later be sponsored onchain by another user to create a new token in the channel.
+---
+import UplinkConfig from '/snippets/uplink-js-config.mdx'
+
+## Usage
+<CodeGroup>
+```typescript app.ts
+import { uplinkClient } from './config'
+
+// create the EIP-712 token intent
+const intent = uplinkClient.createDeferredTokenIntent({
+    channelAddress: '0x1234567890123456789012345678901234567890',
+    uri: 'new token uri',
+    maxSupply: 100n
+})
+
+// sign the intent
+const signedIntent = await uplinkClient.signDeferredTokenIntent(intent)
+```
+<UplinkConfig/>
+</CodeGroup>
+
+## Returns
+`DeferredTokenIntentWithSignature`
+```typescript
+{ 
+ author: Address,
+ signature: Hex,
+  intent: {
+    domain: {
+      name: 'Transmissions'
+      version: '1'
+      chainId: number
+      verifyingContract: Address
+    }
+    types: {
+      DeferredTokenPermission: [
+        { name: 'uri'; type: 'string' },
+        { name: 'maxSupply'; type: 'uint256' },
+        { name: 'deadline'; type: 'uint256' },
+        { name: 'nonce'; type: 'bytes32' },
+      ]
+    }
+    primaryType: 'DeferredTokenPermission'
+    message: {
+      uri: string
+      maxSupply: bigint
+      deadline: bigint
+      nonce: Hex
+    }
+  }
+}
+```
+
+## Parameters
+
+### channelAddress (intent creation)
+- **type**: `string`
+
+The target channel address
+```typescript
+const intent = uplinkClient.createDeferredTokenIntent({
+  channelAddress: '0x1234567890123456789012345678901234567890',
+  ...
+})
+```
+### uri (intent creation)
+- **type**: `string`
+
+The metadata URI of the token
+```typescript
+const intent = uplinkClient.createDeferredTokenIntent({
+  uri: 'new token uri',
+  ...
+})
+```
+
+### maxSupply (intent creation)
+- **type**: `bigint`
+
+The maximum supply of the token
+```typescript
+const intent = uplinkClient.createDeferredTokenIntent({
+  maxSupply: 100n,
+  ...
+})
+```
+
+### intent (signing)
+- **type**: `DeferredTokenIntent`
+
+The unsigned token intent
+```typescript
+const signedIntent = uplinkClient.signDeferredTokenIntent(intent)
+```
+

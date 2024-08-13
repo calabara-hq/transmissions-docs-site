@@ -3,6 +3,14 @@ title: Quick Start
 description: 'Get up and running with the tx-kit SDK'
 ---
 
+## Features
+
+- esm or commonjs
+- first class support for coinbase smart wallet and paymasters
+- ens name resolution
+- small bundle size and minimal dependencies
+- gas estimation and calldata generation for every transaction
+
 ## Installation
 
 <CodeGroup>
@@ -31,3 +39,116 @@ import * from '@tx-kit/sdk'
 const sdk = require('@tx-kit/sdk')
 ```
 
+## Transmissions Client
+
+The SDK provides a client that can be used to interact with the transmissions protocol. The client is initialized with a configuration object and provides 2 sub-clients for uplink and downlink interactions. The uplink client is used to write data to the protocol, while the downlink client is used to read data from the protocol subgraph.
+
+### Usage
+
+```javascript
+
+const { uplinkClient, downlinkClient } = new TransmissionsClient({
+    chainId: number,
+    publicClient?: PublicClient<Transport, Chain>,
+    walletClient?: WalletClient<Transport, Chain, Account>,
+    apiConfig?: ApiConfig,
+    paymasterConfig?: PaymasterConfig
+})
+
+```
+### Returns
+```typescript
+{
+    uplinkClient: UplinkClient, // write client
+    downlinkClient: DownlinkClient // read client
+}
+```
+
+### Parameters
+
+#### chainId
+- **type**: `8453 | 84532`
+
+The chain id of the target chain
+```typescript
+const txClient = new TransmissionsClient({
+    chainId: 8453
+    ...
+})
+```
+
+#### publicClient (optional)
+- **type**: `PublicClient<Transport, Chain>`
+
+The public client to use for public data requests. Some methods require a public client to be provided.
+```typescript
+import { createPublicClient, http } from 'viem'
+
+const publicClient: createPublicClient({
+    chain: base,
+    transport: http()
+})
+
+const txClient = new TransmissionsClient({
+    publicClient
+    ...
+})
+```
+
+#### walletClient (optional)
+- **type**: `WalletClient<Transport, Chain, Account>`
+
+The wallet client to use for modifying blockchain state. Most uplink methods require a wallet client to be provided.
+```typescript
+import { createWalletClient, http } from 'viem'
+
+const walletClient: createWalletClient({
+    chain: base,
+    transport: http(),
+    account: Account // from local private key or browser wallet
+})
+
+const txClient = new TransmissionsClient({
+    walletClient
+    ...
+})
+```
+#### apiConfig (optional)
+- **type**: `ApiConfig`
+
+```typescript
+type ApiConfig = {
+    serverUrl?: string
+}
+```
+
+The api configuration object for the downlink client. This object contains the server url for the subgraph. The default value is the base mainnet subgraph url.
+
+```typescript
+const txClient = new TransmissionsClient({
+    apiConfig: {
+        serverUrl: BASE_SEPOLIA_SUBGRAPH_URL
+    }
+    ...
+})
+```
+#### paymasterConfig (optional)
+- **type**: `PaymasterConfig`
+
+```typescript
+type PaymasterConfig = {
+    paymasterUrl?: string
+}
+```
+
+The paymaster configuration object for the wallet client. This object contains the paymaster url for a paymaster proxy. The default value is undefined.
+See the [paymasters](https://www.smartwallet.dev/guides/paymasters) section of the coinbase smart wallet docs.
+
+```typescript
+const txClient = new TransmissionsClient({
+    paymasterConfig: {
+        paymasterUrl: 'https://example_server/paymaster_proxy'
+    }
+    ...
+})
+```
