@@ -3,7 +3,8 @@ title: Introduction
 description: ''
 ---
 
-Transmissions is a suite of composable, audited, NounsDAO funded contracts and developer tools that enable cooperative applications - allowing cohorts to permissionlessly build grant programs, bounties, decentralized galleries, and other onchain apps.
+Transmissions is a suite of composable, audited, NounsDAO funded contracts and developer tools that power multiplayer onchain applications - 
+allowing communitites to design grant programs, bounties, decentralized galleries, and other onchain apps.
 
 <img
   className="block"
@@ -11,35 +12,41 @@ Transmissions is a suite of composable, audited, NounsDAO funded contracts and d
   alt="Hero Light"
 />
 
-The protocol works by extending the ERC-1155 standard with features that create a structured environment for multiplayer collaboration. Channels are the core entity of the protocol, and can be used to create a variety of applications.
-
-## Use Cases
-- **Grant Programs**: Decentralized funding mechanisms with collaborative decision-making.
-- **Bounties**: Tools for creating and managing incentives within communities.
-- **Decentralized Galleries**: Platforms for curating and displaying digital assets onchain.
-- **Other Cooperative Apps**: Infrastructure for building multiplayer applications and incentives.
 
 
 ## Features
+Channels are the core entity of the protocol. Channels extend the ERC-1155 standard with the following features out of the box.
 
-- **Custom interaction logic**. Read from any onchain data source to govern who is allowed to create and mint tokens in the channel.
+
+- **Custom interaction logic**. Read from any onchain data source to govern users ability to create and mint tokens in the channel.
 - **Custom fees**. Build your own mint pricing and protocol reward splits for the channel.
 - **Push-style protocol rewards**. Protocol rewards flow directly to recipients without claiming.
 - **Token intents**. Create tokens in the collection gaslessly
 - **Onchain sponsorships**. Receive rewards for sponsoring intents onchain
 - **ERC-20 Minting**
-- **Open Source**
-- **Flexible**. BYO interaction logic, fee, and transport layer contracts
+
+
 
 
 ## Transport Layers
 
-Operators may want to run channels in different "modes" depending on the desired use case. This can be done by specifying a transport layer for the channel. The transport layer receives messages from the channel, and runs the application logic for the intended use case.
+Transport layers are application specific contracts that sit atop channels. The transport layer receives messages from the channel, and runs the application logic for the intended use case.
 There are currently 2 transport layers that users can choose from when creating a channel: **Infinite** and **Finite**.
 
 **Infinite Channels** are a never ending collection of posts. They can be used to create galleries, zines, application feeds, and more. E.g. mintboards on uplink.wtf are infinite channels.
 
 **Finite Channels** are timed collections that accept reward conditions and escrow ETH or ERC-20 rewards. They can be used to create bounties, grant rounds, voting systems and more. E.g. contests on uplink.wtf are finite channels, where new tokens are entries and mints are votes.
+
+
+The protocol works by extending the ERC-1155 standard with features that create a structured environment for multiplayer collaboration. Channels are the core entity of the protocol, and can be used to create a variety of applications.
+
+## Use Cases
+- **Grant Programs**
+- **Bounties**
+- **Multiplayer NFT collections**
+- **Other Cooperative Apps**
+
+
 
 <img
   className="block dark:hidden"
